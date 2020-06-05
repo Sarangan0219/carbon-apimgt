@@ -8826,6 +8826,8 @@ public class ApiMgtDAO {
         return status;
     }
 
+
+
     private class SubscriptionInfo {
         private int subscriptionId;
         private String tierId;
@@ -14967,6 +14969,21 @@ public class ApiMgtDAO {
             }
         } catch (SQLException e) {
             handleException("Failed to get artifacts of API with ID " + APIId, e);
+        }
+        return baip;
+    }
+
+    public List<ByteArrayInputStream> getAllAPIBlob() throws APIManagementException {
+        List<ByteArrayInputStream> baip = null;
+        try (Connection connection = APIMgtDBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQLConstants.GET_ALL_API_ARTIFACT)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                byte[] st = (byte[]) rs.getObject(1);
+                baip.add(new ByteArrayInputStream(st));
+            }
+        } catch (SQLException e) {
+            handleException("Failed to get artifacts " , e);
         }
         return baip;
     }

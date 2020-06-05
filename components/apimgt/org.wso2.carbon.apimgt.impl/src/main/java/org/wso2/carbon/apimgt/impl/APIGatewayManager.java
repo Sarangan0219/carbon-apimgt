@@ -150,6 +150,7 @@ public class APIGatewayManager {
         long startTime;
         long endTime;
         long startTimePublishToGateway = System.currentTimeMillis();
+        log.info("Inside publishToGatewayEnvironemnt");
 
         GatewayAPIDTO gatewayAPIDTO;
         try {

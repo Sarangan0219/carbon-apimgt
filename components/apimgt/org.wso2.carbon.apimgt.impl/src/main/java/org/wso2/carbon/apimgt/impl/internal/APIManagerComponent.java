@@ -300,6 +300,7 @@ public class APIManagerComponent {
                 bundleContext.registerService(ArtifactPublisher.class.getName(), new DBPublisher(), null);
                 bundleContext.registerService(ArtifactRetriever.class.getName(), new DBRetriever(), null);
 
+
             }
 
         } catch (APIManagementException e) {

@@ -9,6 +9,7 @@ import org.wso2.carbon.apimgt.impl.dto.GatewayArtifactSynchronizerProperties;
 import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.ArtifactSynchronizerException;
 import org.wso2.carbon.apimgt.gateway.internal.ServiceReferenceHolder;
 
+import java.util.List;
 
 public class InMemoryAPIDeployer {
 
@@ -57,6 +58,26 @@ public class InMemoryAPIDeployer {
                 } catch (AxisFault | ArtifactSynchronizerException axisFault) {
                     log.error(axisFault);
                 }
+            }
+        }
+        return false;
+    }
+
+    public boolean deployAllAPIs () {
+
+        GatewayArtifactSynchronizerProperties gatewayArtifactSynchronizerProperties = ServiceReferenceHolder
+                .getInstance().getAPIManagerConfiguration().getGatewayArtifactSynchronizerProperties();
+
+        if (gatewayArtifactSynchronizerProperties.isInMemoryArtifactSynchronizer()) {
+            try {
+                List<GatewayAPIDTO> gatewayAPIDTO = ServiceReferenceHolder.getInstance().getArtifactRetriever()
+                        .retrieveAllArtifacts();
+                for (GatewayAPIDTO gatewayAPIDTOObject :gatewayAPIDTO){
+                    apiGatewayAdmin.deployAPI(gatewayAPIDTOObject);
+                }
+                return true;
+            } catch (AxisFault | ArtifactSynchronizerException axisFault) {
+                log.error("Error publishing APIs from the Gateway");
             }
         }
         return false;
