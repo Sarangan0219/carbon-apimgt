@@ -30,6 +30,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.gateway.APIMgtGatewayConstants;
+import org.wso2.carbon.apimgt.gateway.InMemoryAPIDeployer;
 import org.wso2.carbon.apimgt.gateway.handlers.security.APISecurityUtils;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayJWTGeneratorImpl;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayUrlSafeJWTGeneratorImpl;
@@ -164,6 +165,9 @@ public class APIHandlerServiceComponent {
                 revokedJWTMapCleaner.startJWTRevokedMapCleaner();
                 ServiceReferenceHolder.getInstance().setTracer(ServiceReferenceHolder.getInstance().getTracingService()
                         .buildTracer(APIMgtGatewayConstants.SERVICE_NAME));
+
+                InMemoryAPIDeployer inMemoryApiDeployer = new InMemoryAPIDeployer();
+                inMemoryApiDeployer.deployAllAPIs();
             }
         } catch (APIManagementException | IOException e) {
             log.error("Error while initializing the API Gateway (APIHandlerServiceComponent) component", e);

@@ -116,6 +116,8 @@ public class APIGatewayManager {
                     (api.getEnvironments().size()) + api.getGatewayLabels().size());
         }
 
+        log.info("inside gateway publihser");
+
         for (String environmentName : api.getEnvironments()) {
             Environment environment = environments.get(environmentName);
             //If the environment is removed from the configuration, continue without publishing
@@ -170,6 +172,7 @@ public class APIGatewayManager {
                     if (artifactPublisher.isArtifactExists(gatewayAPIDTO)) {
                         artifactPublisher.updateArtifacts(gatewayAPIDTO);
                     } else {
+                        log.info("Gateway Artifacts Pushed to DB");
                         artifactPublisher.publishArtifacts(gatewayAPIDTO);
                     }
 

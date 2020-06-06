@@ -60,6 +60,7 @@ public class DBRetriever implements ArtifactRetriever {
             for (ByteArrayInputStream byteArrayInputStream :baip){
                 ObjectInputStream objectStream = new ObjectInputStream(byteArrayInputStream);
                 gatewayAPIDTO.add((GatewayAPIDTO) objectStream.readObject());
+                log.info("Deploying " +((GatewayAPIDTO) objectStream.readObject()).getName());
             }
             if (log.isDebugEnabled()){
                 log.debug("Successfully retrieved Artifacts from DB");

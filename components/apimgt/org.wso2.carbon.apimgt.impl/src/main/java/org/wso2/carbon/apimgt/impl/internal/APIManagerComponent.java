@@ -106,6 +106,7 @@ import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ConfigurationContextService;
 import org.wso2.carbon.utils.FileUtil;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -299,7 +300,6 @@ public class APIManagerComponent {
 
                 bundleContext.registerService(ArtifactPublisher.class.getName(), new DBPublisher(), null);
                 bundleContext.registerService(ArtifactRetriever.class.getName(), new DBRetriever(), null);
-
 
             }
 
