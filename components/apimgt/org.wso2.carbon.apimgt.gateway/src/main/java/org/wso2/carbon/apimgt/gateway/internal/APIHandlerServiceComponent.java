@@ -30,6 +30,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.gateway.APIMgtGatewayConstants;
+import org.wso2.carbon.apimgt.gateway.InMemoryAPIDeployer;
 import org.wso2.carbon.apimgt.gateway.handlers.security.APISecurityUtils;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayJWTGeneratorImpl;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayUrlSafeJWTGeneratorImpl;
@@ -107,6 +108,11 @@ public class APIHandlerServiceComponent {
                     .setAPIManagerConfigurationService(new APIManagerConfigurationServiceImpl(configuration));
             ServiceReferenceHolder.getInstance().setThrottleProperties(configuration.getThrottleProperties());
             String gatewayType = configuration.getFirstProperty(APIConstants.API_GATEWAY_TYPE);
+
+            String gatewayLabel = configuration.getFirstProperty(APIConstants.GatewayArtifactSynchronizer.DEFAULT_GATEWAY_LABEL);
+            InMemoryAPIDeployer inMemoryAPIDeployer = new InMemoryAPIDeployer();
+            inMemoryAPIDeployer.deployAllAPIs(gatewayLabel);
+
             if ("Synapse".equalsIgnoreCase(gatewayType)) {
                 // Register Tenant service creator to deploy tenant specific common synapse configurations
                 TenantServiceCreator listener = new TenantServiceCreator();

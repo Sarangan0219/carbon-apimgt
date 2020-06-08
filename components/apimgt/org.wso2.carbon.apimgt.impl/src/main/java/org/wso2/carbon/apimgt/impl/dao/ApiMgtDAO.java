@@ -14985,6 +14985,23 @@ public class ApiMgtDAO {
         return baip;
     }
 
+    public List<ByteArrayInputStream> getAllGatewayPublishedAPIArtifacts(String label) throws APIManagementException {
+        List<ByteArrayInputStream> baip = null;
+        try (Connection connection = APIMgtDBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQLConstants.GET_ALL_API_ARTIFACT)) {
+            statement.setString(1, label);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                byte[] st = (byte[]) rs.getObject(1);
+                baip.add(new ByteArrayInputStream(st));
+            }
+        } catch (SQLException e) {
+            handleException("Failed to get artifacts " , e);
+        }
+        return baip;
+    }
+
+
     public void deleteGatewayPublishedAPIDetails(String APIId) throws APIManagementException {
         try (Connection connection = APIMgtDBUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQLConstants.DELETE_GW_PUBLISHED_API_DETAILS)) {

@@ -5,6 +5,8 @@ import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.Artifac
 import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.ConnectionUnavailableException;
 import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.TestConnectionNotSupportedException;
 
+import java.util.List;
+
 /**
  * This is a Artifact Retriever type. this interface let users to retriever API artifacts from a storage.
  */
@@ -57,5 +59,12 @@ public interface ArtifactRetriever {
      * @return   type of the notifier
      */
     public String getType();
+
+
+    /**
+     * This method is used to retrieve all data from the storage and deploy
+     * @throws ArtifactSynchronizerException if there are any errors when retrieving the Artifacts
+     */
+    List<GatewayAPIDTO> retrieveAllArtifacts(String label) throws ArtifactSynchronizerException;
 
 }
