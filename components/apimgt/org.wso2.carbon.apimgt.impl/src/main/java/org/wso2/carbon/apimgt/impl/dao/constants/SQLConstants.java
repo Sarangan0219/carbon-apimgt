@@ -3190,7 +3190,7 @@ public class SQLConstants {
             "API_ID = ?";
 
     public static final String GET_ALL_API_ARTIFACT = "SELECT ARTIFACTS FROM AM_GW_API_ARTIFACTS WHERE "
-            + "GATEWAY_LABEL =?";
+            + "GATEWAY_LABEL =?  AND ARTIFACT_TYPE=?";
 
 
     /** Throttle related constants**/

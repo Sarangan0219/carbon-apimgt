@@ -14988,8 +14988,10 @@ public class ApiMgtDAO {
     public List<ByteArrayInputStream> getAllGatewayPublishedAPIArtifacts(String label) throws APIManagementException {
         List<ByteArrayInputStream> baip = null;
         try (Connection connection = APIMgtDBUtil.getConnection();
+
                 PreparedStatement statement = connection.prepareStatement(SQLConstants.GET_ALL_API_ARTIFACT)) {
             statement.setString(1, label);
+            statement.setString(2, APIConstants.GatewayArtifactSynchronizer.ARTIFACT_STATUS_PUBLISH);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 byte[] st = (byte[]) rs.getObject(1);
