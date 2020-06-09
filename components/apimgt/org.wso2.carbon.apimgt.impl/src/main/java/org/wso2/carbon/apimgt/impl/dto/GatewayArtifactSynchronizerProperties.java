@@ -8,7 +8,7 @@ import java.util.Set;
 public class GatewayArtifactSynchronizerProperties {
 
     private boolean syncArtifacts = false;
-    private boolean fileBasedArtifactSynchronizer = true;
+    private boolean fileBasedArtifactSynchronizer = false;
     private String publisher = APIConstants.GatewayArtifactSynchronizer.DEFAULT_PUBLISHER_NAME;
     private String retriever = APIConstants.GatewayArtifactSynchronizer.DEFAULT_RETRIEVER_NAME;
     private Set<String> gatewayLabels = new HashSet<>();

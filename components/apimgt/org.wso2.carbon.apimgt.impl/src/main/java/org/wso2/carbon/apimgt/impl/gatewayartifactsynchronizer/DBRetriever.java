@@ -13,6 +13,8 @@ import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.TestCon
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBRetriever implements ArtifactRetriever {
 
@@ -66,6 +68,24 @@ public class DBRetriever implements ArtifactRetriever {
                     + " API from DB", e);
         }
 
+    }
+
+    @Override
+    public List<GatewayAPIDTO> retrieveAllArtifacts(String label) throws ArtifactSynchronizerException {
+        List<GatewayAPIDTO> gatewayAPIDTO = new ArrayList<>();
+        try {
+            List<ByteArrayInputStream> baip = apiMgtDAO.getAllGatewayPublishedAPIArtifacts(label);
+            for (ByteArrayInputStream byteArrayInputStream :baip){
+                ObjectInputStream objectStream = new ObjectInputStream(byteArrayInputStream);
+                gatewayAPIDTO.add((GatewayAPIDTO) objectStream.readObject());
+            }
+            if (log.isDebugEnabled()){
+                log.debug("Successfully retrieved Artifacts from DB");
+            }
+        } catch (APIManagementException | IOException | ClassNotFoundException e) {
+            throw new ArtifactSynchronizerException("Error retrieving Artifact from DB", e);
+        }
+        return gatewayAPIDTO;
     }
 
     @Override

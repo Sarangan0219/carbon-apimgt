@@ -3124,6 +3124,10 @@ public class SQLConstants {
             "API_ID = ? AND ARTIFACT_TYPE = ?";
 
 
+    public static final String GET_ALL_API_ARTIFACT = "SELECT ARTIFACTS FROM AM_GW_API_ARTIFACTS WHERE "
+            + "GATEWAY_LABEL =? AND ARTIFACT_TYPE=? ";
+
+
     /** Throttle related constants**/
 
     public static class ThrottleSQLConstants{
