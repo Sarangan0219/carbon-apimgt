@@ -29,6 +29,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.apimgt.gateway.APIMgtGatewayConstants;
+import org.wso2.carbon.apimgt.gateway.InMemoryAPIDeployer;
 import org.wso2.carbon.apimgt.gateway.handlers.security.APISecurityUtils;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayJWTGeneratorImpl;
 import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayUrlSafeJWTGeneratorImpl;
@@ -67,6 +68,8 @@ import org.wso2.carbon.utils.ConfigurationContextService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 @Component(
          name = "org.wso2.carbon.apimgt.handlers", 
@@ -76,6 +79,7 @@ public class APIHandlerServiceComponent {
     private static final Log log = LogFactory.getLog(APIHandlerServiceComponent.class);
 
     private APIKeyValidatorClientPool clientPool;
+    private  InMemoryAPIDeployer inMemoryAPIDeployer = new InMemoryAPIDeployer();
 
 
     private ServiceRegistration registration;
@@ -97,6 +101,16 @@ public class APIHandlerServiceComponent {
             APIManagerConfiguration apiManagerConfiguration =
                     ServiceReferenceHolder.getInstance().getAPIManagerConfiguration();
             String gatewayType = apiManagerConfiguration.getFirstProperty(APIConstants.API_GATEWAY_TYPE);
+
+            GatewayArtifactSynchronizerProperties gatewayArtifactSynchronizerProperties =
+                    ServiceReferenceHolder.getInstance()
+                            .getAPIManagerConfiguration().getGatewayArtifactSynchronizerProperties();
+            Set<String> assignedGatewayLabels = gatewayArtifactSynchronizerProperties.getGatewayLabels();
+            for (Iterator<String> it = assignedGatewayLabels.iterator(); it.hasNext(); ) {
+                String label = it.next();
+                inMemoryAPIDeployer.deployAllAPIs(label);
+            }
+
             if ("Synapse".equalsIgnoreCase(gatewayType)) {
                 // Register Tenant service creator to deploy tenant specific common synapse configurations
                 TenantServiceCreator listener = new TenantServiceCreator();
@@ -129,6 +143,8 @@ public class APIHandlerServiceComponent {
                         webServiceRevokedJWTTokensRetriever.startRevokedJWTTokensRetriever();
                     }
                 }
+
+
 
                 // Set APIM Gateway JWT Generator
 
@@ -419,7 +435,7 @@ public class APIHandlerServiceComponent {
                 ServiceReferenceHolder.getInstance().getArtifactRetriever().testConnect();
                 ServiceReferenceHolder.getInstance().getArtifactRetriever().connect();
             } catch (Exception e) {
-                log.error("Error connecting with the ArtifactPublisher");
+                log.error("Error connecting with the ArtifactRetriver", e);
                 ServiceReferenceHolder.getInstance().getArtifactRetriever().disconnect();
                 ServiceReferenceHolder.getInstance().getArtifactRetriever().destroy();
             }
