@@ -23,7 +23,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.impl.APIConstants;
-import org.wso2.carbon.apimgt.impl.dao.ApiMgtDAO;
 import org.wso2.carbon.apimgt.impl.gatewayartifactsynchronizer.exception.ArtifactSynchronizerException;
 
 import java.io.ByteArrayInputStream;
@@ -34,7 +33,7 @@ import java.util.List;
 public class DBRetriever implements ArtifactRetriever {
 
     private static final Log log = LogFactory.getLog(DBRetriever.class);
-    protected ApiMgtDAO apiMgtDAO = ApiMgtDAO.getInstance();
+    protected DBRetriverOpeartions dbRetriverOpeartions = DBRetriverOpeartions.getInstance();
 
     @Override
     public void init() throws ArtifactSynchronizerException {
@@ -48,7 +47,7 @@ public class DBRetriever implements ArtifactRetriever {
         String gatewayRuntimeArtifacts;
         try {
             ByteArrayInputStream byteStream =
-                    apiMgtDAO.getGatewayPublishedAPIArtifacts(APIId, gatewayLabel, gatewayInstruction);
+                    dbRetriverOpeartions.getGatewayPublishedAPIArtifacts(APIId, gatewayLabel, gatewayInstruction);
             byte[] bytes = ByteStreams.toByteArray(byteStream);
             gatewayRuntimeArtifacts = new String(bytes);
             if (log.isDebugEnabled()) {
@@ -64,7 +63,7 @@ public class DBRetriever implements ArtifactRetriever {
     public List<String> retrieveAllArtifacts(String label) throws ArtifactSynchronizerException {
         List<String> gatewayRuntimeArtifactsArray = new ArrayList<>();
         try {
-            List<ByteArrayInputStream> baip = apiMgtDAO.getAllGatewayPublishedAPIArtifacts(label);
+            List<ByteArrayInputStream> baip = dbRetriverOpeartions.getAllGatewayPublishedAPIArtifacts(label);
             for (ByteArrayInputStream byteStream :baip){
                 byte[] bytes = ByteStreams.toByteArray(byteStream);
                 String  gatewayRuntimeArtifacts = new String(bytes);
