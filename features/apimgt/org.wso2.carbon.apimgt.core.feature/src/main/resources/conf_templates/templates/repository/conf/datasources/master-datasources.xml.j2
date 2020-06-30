@@ -71,6 +71,28 @@
         </datasource>
 {% endif%}
 
+{% if database.apim_as_db is defined %}
+        <datasource>
+            <name>WSO2AS_DB</name>
+            <description>The datasource used for Artifact synchronizer feature</description>
+            <jndiConfig>
+                <name>jdbc/WSO2AS_DB</name>
+            </jndiConfig>
+            <definition type="RDBMS">
+                <configuration>
+                    <url>{{database.apim_as_db.url}}</url>
+                    <username>{{database.apim_as_db.username}}</username>
+                    <password>{{database.apim_as_db.password}}</password>
+                    <driverClassName>{{database.apim_as_db.driver}}</driverClassName>
+                    <validationQuery>{{database.apim_as_db.validationQuery}}</validationQuery>
+                    {% for property_name,property_value in database.apim_as_db.pool_options.items() %}
+                    <{{property_name}}>{{property_value}}</{{property_name}}>
+                    {% endfor %}
+                </configuration>
+            </definition>
+        </datasource>
+{% endif%}
+
 {% if database.config is defined %}
         <datasource>
             <name>WSO2CONFIG_DB</name>

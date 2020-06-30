@@ -1599,6 +1599,15 @@ public class APIManagerConfiguration {
             log.debug("Artifact saver Element is not set. Set to default DB Saver");
         }
 
+        OMElement dataSourceElement = omElement.getFirstChildWithName(
+                new QName(APIConstants.GatewayArtifactSynchronizer.AS_DATA_SOURCE));
+        if (dataSourceElement != null) {
+            String dataSource = dataSourceElement.getText();
+            gatewayArtifactSynchronizerProperties.setASDataSource(dataSource);
+        } else {
+            log.debug("Data Source Element is not set. Set to default Data Source");
+        }
+
         OMElement publishDirectlyToGatewayElement = omElement
                 .getFirstChildWithName(new QName(APIConstants.GatewayArtifactSynchronizer.PUBLISH_DIRECTLY_TO_GW_CONFIG));
         if (publishDirectlyToGatewayElement != null) {

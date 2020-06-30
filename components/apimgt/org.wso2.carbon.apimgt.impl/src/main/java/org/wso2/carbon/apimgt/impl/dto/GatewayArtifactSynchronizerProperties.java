@@ -13,11 +13,22 @@ public class GatewayArtifactSynchronizerProperties {
     private String saverName = APIConstants.GatewayArtifactSynchronizer.DB_SAVER_NAME;
     private String retrieverName = APIConstants.GatewayArtifactSynchronizer.DB_RETRIEVER_NAME;
     private Set<String> gatewayLabels = new HashSet<>();
+    private String ASDataSource = "jdbc/WSO2AS_DB" ;
 
     public String getSaverName() {
 
         return saverName;
     }
+
+    public String getASDataSource() {
+        return ASDataSource;
+    }
+
+    public void setASDataSource(String ASDataSourcee) {
+
+        this.ASDataSource = ASDataSource;
+    }
+
 
     public void setSaverName(String saverName) {
 
